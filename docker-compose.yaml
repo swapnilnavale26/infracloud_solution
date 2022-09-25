@@ -7,16 +7,15 @@ services:
     volumes:
     - /root/solution/inputFile:/csvserver/inputdata
     environment:
-    - CSVSERVER_BORDER=Orange
+      CSVSERVER_BORDER: Orange
+    command: ["/csvserver/csvserver"]
   prometheus:
-    image: prom/prometheus:v2.22.0
+    image: "prom/prometheus:v2.22.0"
     ports:
-      - "9090:9090"
+      - 9090:9090
     volumes:
-      - /root/solution/prometheus.yml:/etc/prometheus/prometheus.yml
-      - prometheus-data:/prometheus
-    command: --web.enable-lifecycle  --config.file=/etc/prometheus/prometheus.yml
+      - type: bind
+        source: /root/solution/prometheus.yml 
+        target: /etc/prometheus/prometheus.yml
     depends_on:
     - webapp
-volumes:
-  prometheus-data:
